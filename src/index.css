@@ -14,9 +14,9 @@ a.active hr {
   font-style: normal;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 @media (max-width: 640px) {
   a.active {

@@ -1,71 +1,89 @@
-import PropTypes from "prop-types"
-import { useContext } from "react";
+import PropTypes from "prop-types";
+import { useContext, useState } from "react";
 import { shopContext } from "../../context/ShopContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { TiShoppingCart } from "react-icons/ti";
+
 import { assets } from "../../assets/frontend_assets/assets";
+import { useDispatch } from "react-redux";
+import {
+  addtoCart,
+  addToSingleCart,
+  removeAllFromCart,
+} from "../../features/products/cartSlice";
 
+const ProductItem = ({ product }) => {
+  console.log(product);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-const ProductItem = ({product}) => {
-    const {_id, image, name, price} = product || {};
-    const {currency} = useContext(shopContext)
-    return (
-      <Link to={`/product/${_id}`} className="text-gray-700 cursor-pointer">
-        <div className="cursor-pointer group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center">
-          <img
-            src={image[0]}
-            alt={name}
-            className="group-hover:scale-105 transition object-cover w-4/5 h-4/5 md:w-full md:h-full"
-            width={800}
-            height={800}
-          />
-          <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
-            <img
-              className="h-3 w-3"
-              src={assets.heart_icon}
-              alt="heart_icon"
-            />
-          </button>
-        </div>
+  const [cartQuantity, setCartQuantity] = useState(1);
+  const [colorAtr, setColorAtr] = useState(null);
+  const [sizeAtr, setSizeAtr] = useState(null);
 
-        <p className="md:text-base font-medium pt-2 w-full truncate">
-          {product.name}
-        </p>
-        <p className="w-full text-xs text-gray-500/70 max-sm:hidden truncate">
-          {product.description}
-        </p>
-        <div className="flex items-center gap-2">
-          <p className="text-xs">{4.5}</p>
-          <div className="flex items-center gap-0.5">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <img
-                key={index}
-                className="h-3 w-3"
-                src={
-                  index < Math.floor(4)
-                    ? assets.star_icon
-                    : assets.star_dull_icon
-                }
-                alt="star_icon"
-              />
-            ))}
-          </div>
-        </div>
+  const handleBuyNow = () => {
+    dispatch(removeAllFromCart());
+    dispatch(addToSingleCart({ ...product, sizeAtr, colorAtr, cartQuantity }));
+    navigate("/please-order");
+  };
 
-        <div className="flex items-end justify-between w-full mt-1">
-          <p className="text-base font-medium">
-            {currency}
-            {price}
-          </p>
-          <button className=" max-sm:hidden px-4 py-1.5 text-gray-500 border border-gray-500/20 rounded-full text-xs hover:bg-slate-50 transition">
-            Buy now
-          </button>
-        </div>
+  // const { _id, image, name, price } = product || {};
+  const addToCartHandler = (product) => {
+    dispatch(addtoCart(product, colorAtr, sizeAtr));
+  };
+
+  const { currency } = useContext(shopContext);
+  return (
+    <div className="text-gray-700 cursor-pointer border border-gray-500/20 rounded-lg p-4 flex flex-col gap-2">
+      <Link
+        to={`/product/${product.id}`}
+        className="cursor-pointer group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center"
+      >
+        <img
+          src={`${import.meta.env.VITE_APP_URL}/uploads/product/${
+            product?.photos
+          }`}
+          alt={name}
+          className="group-hover:scale-105 transition object-cover w-4/5 h-4/5 md:w-full md:h-full"
+          width={800}
+          height={800}
+        />
+        <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
+          <img className="h-3 w-3" src={assets.heart_icon} alt="heart_icon" />
+        </button>
       </Link>
-    );
+
+      <p className="md:text-base font-medium pt-2 w-full truncate">
+        {product.name}
+      </p>
+      {/* <p className="w-full text-xs text-gray-500/70 max-sm:hidden truncate">
+        {product.description}
+      </p> */}
+      <div className="flex items-center gap-2">
+        <p className="text-base font-medium">
+          {currency}
+          {product?.unit_price}
+        </p>
+      </div>
+
+      <div className="flex  items-center justify-between gap-5 w-full mt-1">
+        <button onClick={() => addToCartHandler(product)}>
+          <TiShoppingCart className="text-gray-500 text-2xl" />
+        </button>
+
+        <button
+          onClick={handleBuyNow}
+          className=" max-sm:hidden px-4 py-1.5 w-full text-gray-500 border border-gray-500/20 rounded-full text-xs hover:bg-slate-50 transition"
+        >
+          Buy now
+        </button>
+      </div>
+    </div>
+  );
 };
 
 ProductItem.propTypes = {
-    product: PropTypes.object.isRequired
-}
+  product: PropTypes.object.isRequired,
+};
 
 export default ProductItem;

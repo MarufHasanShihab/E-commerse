@@ -4,12 +4,18 @@ import Title from "../components/Title/Title";
 import { assets } from "../assets/frontend_assets/assets";
 import CartTotal from "../components/CartTotal/CartTotal";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Cart = () => {
   const { products, currency, cartItems, updateQuantity } =
     useContext(shopContext);
+
+  const { cartItems: data, cartTotalAmount } = useSelector(
+    (state) => state.cart
+  );
+  console.log(data, cartTotalAmount);
   const [cartData, setCartData] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     const tempData = [];
     for (const items in cartItems) {
@@ -77,7 +83,10 @@ const Cart = () => {
         <div className="w-full sm:w-[450px]">
           <CartTotal />
           <div className="w-full text-end">
-            <button onClick={()=>navigate('/please-order')} className="bg-black text-white text-sm my-8 px-8 py-3">
+            <button
+              onClick={() => navigate("/please-order")}
+              className="bg-black text-white text-sm my-8 px-8 py-3"
+            >
               PROCEED TO CHECKOUT
             </button>
           </div>
