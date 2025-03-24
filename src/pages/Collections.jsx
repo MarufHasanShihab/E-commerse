@@ -96,14 +96,14 @@ const Collections = () => {
         >
           <h3 className="mb-3 text-sm font-medium">CATEGORIES</h3>
           {category?.map((item, index) => (
-            <p key={index} className="flex gap-2">
+            <p key={category.id} className="flex gap-2">
               <input
                 className="w-3"
                 type="checkbox"
                 value={item.name}
                 onChange={toggleCategory}
               />{" "}
-              {item.name.substring(0, 20)}..
+              {item.name.substring(0, 20)}
             </p>
           ))}
         </div>

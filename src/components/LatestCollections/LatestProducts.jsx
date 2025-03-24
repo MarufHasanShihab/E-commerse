@@ -2,9 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { shopContext } from "../../context/ShopContext";
 import Title from "../Title/Title";
 import ProductItem from "../ProductItem/ProductItem";
+import { useSelector } from "react-redux";
 
 const LatestProducts = () => {
   const { products } = useContext(shopContext);
+  const { items: data } = useSelector((state) => state.newArrival);
   const [latestProduct, setLatestProduct] = useState([]);
   useEffect(() => {
     setLatestProduct(products.slice(0, 10));
@@ -20,8 +22,8 @@ const LatestProducts = () => {
       </div>
       {/* Rendering Product */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 gap-y-6">
-        {latestProduct?.map((product) => (
-          <ProductItem key={product._id} product={product} />
+        {data?.map((product) => (
+          <ProductItem key={product.id} product={product} />
         ))}
       </div>
     </div>

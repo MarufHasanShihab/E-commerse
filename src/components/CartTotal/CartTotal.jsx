@@ -1,15 +1,10 @@
 import { useContext } from "react";
 import { shopContext } from "../../context/ShopContext";
 import Title from "../Title/Title";
-import { useSelector } from "react-redux";
 
-const CartTotal = () => {
-  const { currency, delivery_fee, getCartAmount } = useContext(shopContext);
-  const { cartItems: data, cartTotalAmount } = useSelector(
-    (state) => state.cart
-  );
+const CartTotal = ({ shippingCost, cartTotalAmount, grandTotal }) => {
+  const { currency } = useContext(shopContext);
 
-  console.log(data);
   return (
     <div className="w-full">
       <div className="text-2xl">
@@ -31,7 +26,7 @@ const CartTotal = () => {
           <p>Shipping Fee</p>
           <p>
             {currency}
-            {delivery_fee}.00
+            {shippingCost}.00
           </p>
         </div>
         <hr />
@@ -39,7 +34,7 @@ const CartTotal = () => {
           <b>Total</b>
           <b>
             {currency}
-            {getCartAmount() === 0 ? 0 : getCartAmount() + delivery_fee}.00
+            {grandTotal}.00
           </b>
         </div>
       </div>

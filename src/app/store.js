@@ -7,6 +7,13 @@ import productSlice, {
 import categorySlice, {
   categoryFetching,
 } from "../features/category/allCategorySlice";
+import shippingChargeSlice from "../features/shipping/shipingChargeSlice";
+import bestSellingSlice, {
+  bestSellingFetching,
+} from "./../features/products/bestSellingProduct";
+import newarrivalSlice, {
+  newarrivalFetching,
+} from "../features/products/newArriableProduct";
 
 export const store = configureStore({
   reducer: {
@@ -14,8 +21,13 @@ export const store = configureStore({
     cart: cartReducer,
     category: categorySlice,
     products: productSlice,
+    bestSell: bestSellingSlice,
+    newArrival: newarrivalSlice,
+    shippingCharge: shippingChargeSlice,
   },
 });
 
 store.dispatch(productFetching());
+store.dispatch(bestSellingFetching());
+store.dispatch(newarrivalFetching());
 store.dispatch(categoryFetching());

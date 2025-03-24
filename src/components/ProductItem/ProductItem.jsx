@@ -24,7 +24,7 @@ const ProductItem = ({ product }) => {
   const handleBuyNow = () => {
     dispatch(removeAllFromCart());
     dispatch(addToSingleCart({ ...product, sizeAtr, colorAtr, cartQuantity }));
-    navigate("/please-order");
+    navigate("/place-order");
   };
 
   // const { _id, image, name, price } = product || {};
