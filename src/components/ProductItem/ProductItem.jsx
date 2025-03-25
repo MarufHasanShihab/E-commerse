@@ -60,10 +60,24 @@ const ProductItem = ({ product }) => {
         {product.description}
       </p> */}
       <div className="flex items-center gap-2">
-        <p className="text-base font-medium">
-          {currency}
-          {product?.unit_price}
-        </p>
+        {product?.after_discount > 0 ? (
+          <>
+            {/* ডিসকাউন্টের পরের মূল্য */}
+            <p className="text-base font-medium">${product.after_discount}</p>
+
+            {/* আগের মূল্য (discounted price), যেটার উপর লাইন থাকবে */}
+            <p className="text-base font-medium line-through text-gray-500">
+              {currency}
+              {product.unit_price}
+            </p>
+          </>
+        ) : (
+          // ডিসকাউন্ট না থাকলে শুধু আসল প্রাইস দেখাবে
+          <p className="text-base font-medium">
+            {currency}
+            {product.unit_price}
+          </p>
+        )}
       </div>
 
       <div className="flex  items-center justify-between gap-5 w-full mt-1">

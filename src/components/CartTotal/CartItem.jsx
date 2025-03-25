@@ -18,6 +18,7 @@ import {
 // } from "../features/addToCart/addToCartSlice";
 
 const CartItem = ({ product }) => {
+  console.log(product);
   const dispatch = useDispatch();
 
   const handleRemove = (product) => {
